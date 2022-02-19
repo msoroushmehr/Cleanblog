@@ -1,0 +1,66 @@
+
+{% extends 'base_list.html' %}
+{% load static %}
+{% block header %}
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('{{category.image.url}}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>کتابفروشی آنلاین منتورینگ </h1>
+                    <span class="subheading">محلی برای خرید و گپ و گفت کتاب</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{% endblock %}
+{% block main%}
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <!-- Post preview-->
+         {% block theader %} <div style="color:DodgerBlue;" >  <h3 >دسته بندی کتابهای {{category.title}}:</h3> </div>
+          {% endblock %}  
+          {% for article in object_list %}
+            <div class="post-preview">
+                <a href="/article/{{article.slug}}">
+                    <h2 class="post-title">{{article.title}}</h2>
+
+                    <h3 class="post-subtitle text-justify">{{article.description|truncatewords:20}}</h3>
+                </a>
+                <p class="post-meta">
+نوشته شده توسط                            <a href="{% url 'myapp:author' article.author %}">{{article.author.get_full_name}}</a>
+{{article.jpublish}}                       
+</p>
+{% for cat in article.category.active %}
+<a href="#">#{{cat}} 
+
+</a>
+             {% endfor %}
+        
+            </div>
+            <!-- Divider-->
+            <hr class="my-4" />
+            {% endfor %}
+
+            <!-- Pager-->
+            <div class="d-flex justify-content-end mb-4">
+                {% if page_obj.has_next %}
+                <a class="btn btn-primary text-uppercase" href="{% block next_page %}{% url 'myapp:category' category.slug page_obj.next_page_number  %}{% endblock %}">پستهای قدیمی تر</a>
+                {% endif %}
+            <p>&nbsp;&nbsp;
+                &nbsp;
+                &nbsp;&nbsp;
+                &nbsp;
+                &nbsp;&nbsp;</p>
+                {% if page_obj.has_previous %}
+                <a class="btn btn-primary text-uppercase" href="{% block previous_page %}{% url 'myapp:category' category.slug page_obj.previous_page_number   %}{% endblock %}">پستهای جدید تر</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div> 
+{% endblock %}

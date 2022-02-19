@@ -1,0 +1,59 @@
+ {% extends 'registration/base.html' %}
+ {% load static %}
+{% block title %} لیست مقالات {% endblock %}
+{% block main %}
+<div class="row">
+    <div class="col-12">
+      <div class="card">
+       
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body table-responsive p-0">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th> عنوان مقاله </th>
+                <th>نویسنده</th>   
+                <th>اسلاگ مقاله</th>
+
+                <th>تصویر</th>
+
+                <th>خلاصه مقاله</th>
+                <th>دسته بندی</th>
+                <th>زمان انتشار</th>
+                <th> وضعیت مقاله</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              {% for article in object_list %}
+              <tr>
+              <td>{{article.title}}</td>
+              <td>{{article.author.get_full_name}}</td>
+              <td>{% url 'myapp:detail' article.slug %}</td>
+              <td><img src="{{article.image.url}}" width=100 height=75 ></td>
+              <td>{{article.description|truncatewords:30}}</td>
+                  <td> {{article.category_to_str}}</td>
+                  <td>{{article.jpublish}}</td>
+                  <td>
+                  {% if article.status == 'p' %}
+<span class="badge badge-success target=_blank">منتشرشده</span>
+<a class="badge badge-primary" href="{% url 'myapp:detail' article.slug %}">نمایش مقاله  </a>
+                  {% else %}
+                  <span class="badge badge-danger target=_blank">پیش نویس</span>
+                  {% endif %}
+                  </td>
+                            </tr>
+{% endfor %}
+              
+               
+               
+            </tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+    </div>
+  </div>
+{% endblock %}
